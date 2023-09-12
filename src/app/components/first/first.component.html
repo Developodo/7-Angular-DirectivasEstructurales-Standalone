@@ -1,0 +1,62 @@
+<div [ngClass]="clasesBorde">
+  <p>
+    <input
+      (keydown.shift.space)="poneMayuscula($event)"
+      [(ngModel)]="nombre"
+      placeholder="Nombre"
+    />
+  </p>
+  <p>
+    <button (click)="decrementaEdad()">-</button>
+    <span> {{ edad }} años </span>
+    <button (click)="incrementaEdad()">+</button>
+  </p>
+
+  <div [ngStyle]="estiloLetras">Validando edad...</div>
+
+  <button (click)="resetea()">Resetear</button>
+  <button [disabled]="edad < 18 || !this.nombre.trim()" (click)="inserta()">
+    Insertar
+  </button>
+</div>
+<ng-container *ngIf="edad >= 18; else miBloqueElse"
+  >Es mayor de edad</ng-container
+>
+<ng-template #miBloqueElse>Es menor de edad</ng-template>
+
+<hr />
+<ng-container *ngIf="this.personas.length == 0; else elseBlock">
+  No hay personas
+</ng-container>
+
+<ng-template #elseBlock>
+  <table border="1">
+    <ng-container
+      *ngFor="
+        let persona of personas;
+        let odd = odd;
+        let even = even;
+        let first = first;
+        let last = last;
+        index as idx;
+        trackBy: trackByFunction
+      "
+    >
+      <thead *ngIf="first">
+        <td>#</td>
+        <td>nombre</td>
+        <td>edad</td>
+      </thead>
+      <tr [style.background-color]="odd ? 'gray' : 'white'">
+        <td>{{ first | json }}Persona #{{ idx + 1 }}</td>
+        <td>{{ persona.nombre }}</td>
+        <td>{{ persona.edad }}</td>
+      </tr>
+      <tfoot *ngIf="last">
+        <td>#</td>
+        <td>nombre</td>
+        <td>edad</td>
+      </tfoot>
+    </ng-container>
+  </table>
+</ng-template>
